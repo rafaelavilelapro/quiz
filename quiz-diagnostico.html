@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico GAME-ON® | Descubra onde seus alunos estão desistindo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1A365D;
+      --primary-dark: #0F2444;
+      --primary-light: #2D5A87;
+      --accent: #D4A853;
+      --accent-light: #E8C882;
+      --white: #FFFFFF;
+      --off-white: #F8F6F3;
+      --gray-100: #F7F7F7;
+      --gray-200: #E5E5E5;
+      --gray-400: #9CA3AF;
+      --gray-600: #6B7280;
+      --gray-800: #374151;
+      --success: #059669;
+      --success-light: #D1FAE5;
+      --error: #DC2626;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: var(--off-white); }
+    .landing-page { min-height: 100vh; }
+    .hero { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 4rem 1rem; position: relative; overflow: hidden; }
+    .hero-content { max-width: 800px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(212, 168, 83, 0.15); border: 1px solid var(--accent); color: var(--accent); padding: 0.5rem 1rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 1.5rem; }
+    .hero h1 span { color: var(--accent); }
+    .hero-subtitle { font-size: 1.1rem; color: rgba(255, 255, 255, 0.85); max-width: 600px; margin: 0 auto 2rem; }
+    .hero-tags { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .hero-tag { display: flex; align-items: center; gap: 6px; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .pain-section { padding: 4rem 1rem; background: var(--white); }
+    .pain-intro { text-align: center; margin-bottom: 2rem; }
+    .pain-intro p { font-size: 1.1rem; color: var(--gray-600); }
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .pain-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: var(--gray-100); border-radius: 8px; border-left: 3px solid var(--accent); }
+    .pain-icon { flex-shrink: 0; width: 24px; height: 24px; color: var(--accent); }
+    .pain-cta { text-align: center; font-size: 1.15rem; font-weight: 600; color: var(--primary); }
+    .pain-cta span { color: var(--accent); }
+    .whatis-section { padding: 4rem 1rem; background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%); }
+    .whatis-card { background: var(--white); border-radius: 24px; padding: 3rem; box-shadow: 0 12px 40px rgba(26, 54, 93, 0.15); border: 1px solid var(--gray-200); }
+    .whatis-header { text-align: center; margin-bottom: 2rem; }
+    .whatis-header h2 { font-family: var(--font-display); font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; }
+    .whatis-header p { color: var(--gray-600); font-size: 1.05rem; }
+    .whatis-benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .benefit-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .benefit-icon { flex-shrink: 0; width: 28px; height: 28px; background: var(--success-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--success); }
+    .whatis-specs { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid var(--gray-200); }
+    .spec-item { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; color: var(--gray-600); }
+    .forwho-section { padding: 4rem 1rem; background: var(--white); }
+    .forwho-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .forwho-card { padding: 2rem; border-radius: 16px; }
+    .forwho-card.yes { background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border: 1px solid #A7F3D0; }
+    .forwho-card.no { background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); border: 1px solid #FECACA; }
+    .forwho-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .forwho-card.yes h3 { color: #047857; }
+    .forwho-card.no h3 { color: #B91C1C; }
+    .forwho-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .forwho-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.95rem; }
+    .forwho-card.yes .forwho-list li { color: #065F46; }
+    .forwho-card.no .forwho-list li { color: #991B1B; }
+    .cta-section { padding: 4rem 1rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); text-align: center; }
+    .cta-section h2 { font-family: var(--font-display); font-size: 1.6rem; color: var(--white); margin-bottom: 1.5rem; }
+    .cta-button { display: inline-flex; align-items: center; gap: 1rem; background: var(--accent); color: var(--primary-dark); font-size: 1.15rem; font-weight: 700; padding: 1.5rem 3rem; border-radius: 16px; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(212, 168, 83, 0.4); text-decoration: none; }
+    .cta-button:hover { background: var(--accent-light); transform: translateY(-2px); }
+    .cta-microcopy { margin-top: 1rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); }
+    .footer-note { padding: 2rem 1rem; background: var(--off-white); text-align: center; }
+    .footer-note p { max-width: 600px; margin: 0 auto; font-size: 0.95rem; color: var(--gray-600); font-style: italic; }
+    .quiz-container { display: none; min-height: 100vh; background: var(--off-white); }
+    .quiz-container.active { display: block; }
+    .quiz-header { background: var(--primary); padding: 1.5rem; position: sticky; top: 0; z-index: 100; }
+    .quiz-header-content { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .quiz-logo { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--white); }
+    .quiz-logo span { color: var(--accent); }
+    .quiz-progress { display: flex; align-items: center; gap: 1rem; color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+    .progress-bar { width: 120px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.4s ease; width: 0%; }
+    .quiz-main { max-width: 700px; margin: 0 auto; padding: 3rem 1rem; }
+    .quiz-step { display: none; animation: fadeInUp 0.4s ease-out; }
+    .quiz-step.active { display: block; }
+    .step-indicator { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: var(--white); padding: 6px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .quiz-question { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--primary); margin-bottom: 2rem; line-height: 1.4; }
+    .quiz-options { display: flex; flex-direction: column; gap: 1rem; }
+    .quiz-option { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem 2rem; background: var(--white); border: 2px solid var(--gray-200); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; font-size: 1rem; color: var(--gray-800); }
+    .quiz-option:hover { border-color: var(--primary-light); background: rgba(26, 54, 93, 0.02); }
+    .quiz-option.selected { border-color: var(--primary); background: rgba(26, 54, 93, 0.05); }
+    .quiz-option .option-indicator { width: 24px; height: 24px; border: 2px solid var(--gray-200); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease; }
+    .quiz-option.selected .option-indicator { border-color: var(--primary); background: var(--primary); }
+    .quiz-option.selected .option-indicator::after { content: ''; width: 8px; height: 8px; background: var(--white); border-radius: 50%; }
+    .quiz-transition { text-align: center; padding: 3rem 0; }
+    .quiz-transition h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--primary); margin-bottom: 1rem; }
+    .quiz-transition p { color: var(--gray-600); margin-bottom: 2rem; }
+    .quiz-nav { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--gray-200); }
+    .btn-back { display: flex; align-items: center; gap: 6px; padding: 1rem 1.5rem; background: transparent; border: 1px solid var(--gray-400); border-radius: 8px; color: var(--gray-600); font-size: 0.95rem; cursor: pointer; }
+    .btn-back:hover { border-color: var(--gray-600); color: var(--gray-800); }
+    .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-next { display: flex; align-items: center; gap: 6px; padding: 1rem 2rem; background: var(--primary); border: none; border-radius: 8px; color: var(--white); font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+    .btn-next:hover { background: var(--primary-light); }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+    .email-step { text-align: center; }
+    .email-step h3 { font-family: var(--font-display); font-size: 1.6rem; color: var(--primary); margin-bottom: 1rem; }
+    .email-step > p { color: var(--gray-600); margin-bottom: 2rem; }
+    .email-form { max-width: 400px; margin: 0 auto; }
+    .email-input { width: 100%; padding: 1.5rem; font-size: 1rem; border: 2px solid var(--gray-200); border-radius: 8px; margin-bottom: 1rem; }
+    .email-input:focus { outline: none; border-color: var(--primary); }
+    .email-submit { width: 100%; padding: 1.5rem; background: var(--accent); color: var(--primary-dark); font-size: 1rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
+    .email-submit:hover { background: var(--accent-light); }
+    .email-privacy { margin-top: 1rem; font-size: 0.8rem; color: var(--gray-400); }
+    .loading-step { text-align: center; padding: 4rem 0; }
+    .loading-spinner { width: 60px; height: 60px; border: 4px solid var(--gray-200); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 2rem; animation: spin 1s linear infinite; }
+    .loading-step h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--primary); margin-bottom: 1rem; }
+    .result-step { text-align: center; }
+    .result-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: var(--white); padding: 0.5rem 1.5rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .result-title { font-family: var(--font-display); font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; }
+    .result-subtitle { font-size: 1.15rem; color: var(--gray-600); font-style: italic; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .result-card { background: var(--white); border-radius: 24px; padding: 3rem; box-shadow: 0 12px 40px rgba(26, 54, 93, 0.15); text-align: left; margin-bottom: 2rem; }
+    .result-card h4 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; }
+    .result-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+    .result-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 0.95rem; color: var(--gray-800); }
+    .result-anchor { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border: 1px solid #F59E0B; border-radius: 8px; padding: 1.5rem; text-align: center; }
+    .result-anchor p { font-weight: 700; color: var(--primary); font-size: 1.05rem; }
+    .result-cta { text-align: center; }
+    .result-cta-button { display: inline-flex; align-items: center; gap: 1rem; background: var(--accent); color: var(--primary-dark); font-size: 1.1rem; font-weight: 700; padding: 1.5rem 3rem; border-radius: 16px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(212, 168, 83, 0.4); text-decoration: none; }
+    .result-cta-button:hover { background: var(--accent-light); transform: translateY(-2px); }
+    .result-cta-subtitle { margin-top: 1rem; font-size: 0.9rem; color: var(--gray-600); }
+    .result-secondary { margin-top: 2rem; margin-bottom: 2rem; }
+    .result-secondary p { font-size: 0.95rem; color: var(--gray-600); background: var(--gray-100); padding: 1rem 1.5rem; border-radius: 8px; display: inline-block; }
+    .result-secondary strong { color: var(--gray-800); }
+    .session-block { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 20px; padding: 2.5rem; margin-top: 1rem; text-align: left; }
+    .session-context { font-size: 1rem; color: rgba(255, 255, 255, 0.9); line-height: 1.8; margin: 0 0 1rem 0; }
+    .session-context strong { color: var(--accent); }
+    .session-highlight { background: rgba(212, 168, 83, 0.15); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+    .session-highlight p { font-size: 0.95rem; color: var(--accent-light); font-weight: 500; margin: 0; }
+    .session-info { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+    .session-info h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem; }
+    .session-info p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0 0 0.75rem 0; }
+    .session-cta-button { display: block; width: 100%; text-align: center; background: var(--accent); color: var(--primary-dark); font-size: 1.1rem; font-weight: 700; padding: 1.25rem 2rem; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(212, 168, 83, 0.3); text-decoration: none; margin-top: 2rem; transition: all 0.3s ease; }
+    .session-cta-button:hover { background: var(--accent-light); transform: translateY(-2px); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 640px) { .hero h1 { font-size: 1.6rem; } .quiz-question { font-size: 1.25rem; } .result-title { font-size: 1.5rem; } }
+  </style>
+</head>
+<body>
+  <div class="landing-page" id="landingPage">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🎯 Diagnóstico Gratuito</div>
+        <h1>Descubra onde seus alunos estão <span>desistindo</span> — antes de investir mais tempo ou tráfego</h1>
+        <p class="hero-subtitle">Você conhece os 10 Poderes da Gamificação. Agora descubra qual parte da experiência do seu curso está impedindo seus alunos de avançar hoje. Sem teoria. Sem achismo. Sem refazer tudo.</p>
+        <div class="hero-tags">
+          <span class="hero-tag">✓ 6–8 minutos</span>
+          <span class="hero-tag">✓ Resultado imediato</span>
+          <span class="hero-tag">✓ Próximo passo claro</span>
+        </div>
+      </div>
+    </section>
+    <section class="pain-section">
+      <div class="container">
+        <div class="pain-intro"><p>Se você se identifica com isso...</p></div>
+        <div class="pain-grid">
+          <div class="pain-item"><span class="pain-icon">💰</span><p>Já vendeu um curso ou mentoria</p></div>
+          <div class="pain-item"><span class="pain-icon">👻</span><p>Sente que os alunos somem no meio</p></div>
+          <div class="pain-item"><span class="pain-icon">🧠</span><p>Sente que entrega muito mais do que o aluno aproveita</p></div>
+          <div class="pain-item"><span class="pain-icon">⚠️</span><p>Sente que algo está errado, mas não sabe exatamente onde</p></div>
+          <div class="pain-item"><span class="pain-icon">🤔</span><p>Percebe que o problema não é marketing</p></div>
+          <div class="pain-item"><span class="pain-icon">📈</span><p>Tem receio de escalar e aumentar a frustração dos alunos</p></div>
+        </div> 
+        <p class="pain-cta">👉 <span>Você não está errado. Só está tentando escalar algo que ainda não foi desenhado para escalar.</span></p>
+      </div>
+    </section>
+    <section class="whatis-section">
+      <div class="container">
+        <div class="whatis-card">
+          <div class="whatis-header">
+            <h2>O que é o Diagnóstico GAME-ON®</h2>
+            <p>Um diagnóstico rápido e guiado que analisa toda a jornada do aluno, do primeiro acesso até a continuidade.</p>
+          </div>
+          <div class="whatis-benefits">
+            <div class="benefit-item"><div class="benefit-icon">✓</div><p>O <strong>principal ponto</strong> da experiência onde seus alunos estão desistindo</p></div>
+            <div class="benefit-item"><div class="benefit-icon">✓</div><p>O <strong>segundo ponto</strong> que precisa de atenção</p></div>
+            <div class="benefit-item"><div class="benefit-icon">✓</div><p>Qual etapa está <strong>impedindo seus alunos</strong></p></div>
+          </div>
+          <div class="whatis-specs">
+            <span class="spec-item">⏱ 6–8 minutos</span>
+            <span class="spec-item">📊 Resultado imediato</span>
+            <span class="spec-item">➡️ Próximo passo claro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="forwho-section">
+      <div class="container">
+        <div class="forwho-grid">
+          <div class="forwho-card yes">
+            <h3>✓ Para quem é</h3>
+            <ul class="forwho-list">
+              <li>✓ Já tem curso ou mentoria (mesmo com poucas vendas)</li>
+              <li>✓ Está frustrado com engajamento ou conclusão</li>
+              <li>✓ Quer melhorar a entrega antes de escalar</li>
+            </ul>
+          </div>
+          <div class="forwho-card no">
+            <h3>✗ Para quem NÃO é</h3>
+            <ul class="forwho-list">
+              <li>✗ Quem ainda não tem curso</li>
+              <li>✗ Quem só quer aprender teoria</li>
+              <li>✗ Quem busca "truques de marketing"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="cta-section">
+      <div class="container">
+        <h2>Pronto para entender por que seus alunos não continuam como você gostaria?</h2>
+        <button class="cta-button" onclick="startQuiz()">👉 Fazer o Diagnóstico da Experiência do Curso →</button>
+        <p class="cta-microcopy">Gratuito • Online • Automático</p>
+      </div>
+    </section>
+    <section class="footer-note">
+      <p>O diagnóstico gratuito não substitui a mentoria e não entrega método completo. Ele mostra onde parar de insistir errado e qual é o próximo passo mais inteligente para o seu curso ou mentoria.</p>
+    </section>
+  </div>
+  <div class="quiz-container" id="quizContainer">
+    <header class="quiz-header">
+      <div class="quiz-header-content">
+        <div class="quiz-logo">GAME-<span>ON</span>®</div>
+        <div class="quiz-progress"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><span id="progressText">0%</span></div>
+      </div>
+    </header>
+    <main class="quiz-main">
+      <div class="quiz-step active" data-step="0">
+        <div class="quiz-transition">
+          <h3>Bem-vindo ao Diagnóstico GAME-ON®</h3>
+          <p>Esse é um diagnóstico rápido para identificar onde seus alunos estão desistindo.<br><br>Não é teste, não tem certo ou errado. Responda pelo que mais acontece hoje.</p>
+          <button class="btn-next" onclick="nextStep()">Vamos começar! 🚀</button>
+        </div>
+      </div>
+      <div class="quiz-step" data-step="1">
+        <span class="step-indicator">Pergunta 1 de 18</span>
+        <h2 class="quiz-question">Você já tem um curso ou mentoria?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim_vendo"><span class="option-indicator"></span>Sim, já vendo</label>
+          <label class="quiz-option" data-value="sim_estruturando"><span class="option-indicator"></span>Sim, mas ainda estou estruturando</label>
+          <label class="quiz-option" data-value="nao_tenho"><span class="option-indicator"></span>Ainda não tenho</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()" disabled>← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="2">
+        <span class="step-indicator">Pergunta 2 de 18</span>
+        <h2 class="quiz-question">Hoje, o que mais te incomoda?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="falta_vendas"><span class="option-indicator"></span>Falta de vendas</label>
+          <label class="quiz-option" data-value="falta_engajamento"><span class="option-indicator"></span>Falta de engajamento dos alunos</label>
+          <label class="quiz-option" data-value="sem_resultado"><span class="option-indicator"></span>Alunos não chegam ao resultado</label>
+          <label class="quiz-option" data-value="nao_sei"><span class="option-indicator"></span>Não sei exatamente</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="3">
+        <span class="step-indicator">Pergunta 3 de 18</span>
+        <h2 class="quiz-question">Você sente que o problema está mais em:</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="marketing"><span class="option-indicator"></span>Marketing</label>
+          <label class="quiz-option" data-value="conteudo"><span class="option-indicator"></span>Conteúdo</label>
+          <label class="quiz-option" data-value="estrutura"><span class="option-indicator"></span>Estrutura da experiência</label>
+          <label class="quiz-option" data-value="nao_sei"><span class="option-indicator"></span>Não sei dizer</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="4">
+        <div class="quiz-transition">
+          <h3>Agora vamos analisar a experiência do seu aluno 📝</h3>
+          <p>Responda pensando no que acontece na prática, não no ideal.</p>
+          <button class="btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+      <div class="quiz-step" data-step="5" data-score="entrada" data-type="positive">
+        <span class="step-indicator">Pergunta 4 de 18</span>
+        <h2 class="quiz-question">Depois que o aluno entra, ele entende claramente o valor do curso?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="6" data-score="entrada" data-type="positive">
+        <span class="step-indicator">Pergunta 5 de 18</span>
+        <h2 class="quiz-question">Nos primeiros dias, o aluno se sente orientado e motivado a continuar?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="7" data-score="continuidade" data-type="negative">
+        <span class="step-indicator">Pergunta 6 de 18</span>
+        <h2 class="quiz-question">Seus alunos costumam desaparecer no meio do curso?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="8" data-score="continuidade" data-type="negative">
+        <span class="step-indicator">Pergunta 7 de 18</span>
+        <h2 class="quiz-question">Os alunos sentem que o curso é longo, confuso ou cansativo?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="9" data-score="acao" data-type="negative">
+        <span class="step-indicator">Pergunta 8 de 18</span>
+        <h2 class="quiz-question">Os alunos assistem às aulas, mas aplicam pouco o que aprendem?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="10" data-score="acao" data-type="positive">
+        <span class="step-indicator">Pergunta 9 de 18</span>
+        <h2 class="quiz-question">Você consegue identificar claramente quando o aluno começa a ter resultados?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="11" data-score="prova" data-type="positive">
+        <span class="step-indicator">Pergunta 10 de 18</span>
+        <h2 class="quiz-question">Os depoimentos surgem de forma natural, sem você precisar pedir?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="12" data-score="prova" data-type="negative">
+        <span class="step-indicator">Pergunta 11 de 18</span>
+        <h2 class="quiz-question">Alunos raramente indicam seu curso para outras pessoas?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="13" data-score="fechamento" data-type="negative">
+        <span class="step-indicator">Pergunta 12 de 18</span>
+        <h2 class="quiz-question">Muitos alunos não concluem oficialmente o curso?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="14" data-score="fechamento" data-type="negative">
+        <span class="step-indicator">Pergunta 13 de 18</span>
+        <h2 class="quiz-question">Poucos alunos compram o próximo produto ou continuam com você?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="sim"><span class="option-indicator"></span>Sim</label>
+          <label class="quiz-option" data-value="as_vezes"><span class="option-indicator"></span>Às vezes</label>
+          <label class="quiz-option" data-value="nao"><span class="option-indicator"></span>Não</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="15">
+        <div class="quiz-transition">
+          <h3>Quase lá! 🎯</h3>
+          <p>Agora preciso entender o que mais te incomoda hoje...</p>
+          <button class="btn-next" onclick="nextStep()">Continuar →</button>
+        </div>
+      </div>
+      <div class="quiz-step" data-step="16" data-tiebreaker="true" data-weight="2">
+        <span class="step-indicator">Pergunta 14 de 18</span>
+        <h2 class="quiz-question">O que mais te incomoda hoje?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="continuidade" data-tie="continuidade"><span class="option-indicator"></span>Alunos somem</label>
+          <label class="quiz-option" data-value="acao" data-tie="acao"><span class="option-indicator"></span>Alunos não aplicam</label>
+          <label class="quiz-option" data-value="prova" data-tie="prova"><span class="option-indicator"></span>Falta reconhecimento / prova</label>
+          <label class="quiz-option" data-value="fechamento" data-tie="fechamento"><span class="option-indicator"></span>Curso não gera continuidade depois</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="17" data-tiebreaker="true" data-weight="2">
+        <span class="step-indicator">Pergunta 15 de 18</span>
+        <h2 class="quiz-question">Onde você sente que está perdendo mais dinheiro hoje?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="entrada" data-tie="entrada"><span class="option-indicator"></span>Reembolsos / frustração inicial</label>
+          <label class="quiz-option" data-value="continuidade" data-tie="continuidade"><span class="option-indicator"></span>Curso parado no meio</label>
+          <label class="quiz-option" data-value="acao" data-tie="acao"><span class="option-indicator"></span>Alunos não têm resultado</label>
+          <label class="quiz-option" data-value="fechamento" data-tie="fechamento"><span class="option-indicator"></span>Pouca recompra / indicação</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="18" data-tiebreaker="true" data-weight="3">
+        <span class="step-indicator">Pergunta 16 de 18</span>
+        <h2 class="quiz-question">Se você pudesse resolver só UMA coisa agora, qual seria?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="continuidade" data-tie="continuidade"><span class="option-indicator"></span>Fazer o aluno continuar</label>
+          <label class="quiz-option" data-value="acao" data-tie="acao"><span class="option-indicator"></span>Fazer o aluno aplicar</label>
+          <label class="quiz-option" data-value="prova" data-tie="prova"><span class="option-indicator"></span>Tornar resultados visíveis</label>
+          <label class="quiz-option" data-value="fechamento" data-tie="fechamento"><span class="option-indicator"></span>Criar continuidade após o curso</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="19">
+        <span class="step-indicator">Pergunta 17 de 18</span>
+        <h2 class="quiz-question">Qual frase mais se aproxima do que você sente hoje?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="algo_errado"><span class="option-indicator"></span>"Meu curso é bom, mas algo está errado."</label>
+          <label class="quiz-option" data-value="entrego_mais"><span class="option-indicator"></span>"Sinto que entrego mais do que o aluno aproveita."</label>
+          <label class="quiz-option" data-value="medo_escalar"><span class="option-indicator"></span>"Tenho medo de escalar e aumentar frustração."</label>
+          <label class="quiz-option" data-value="nao_sei"><span class="option-indicator"></span>"Ainda não sei onde está o problema."</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
+      </div>
+      <div class="quiz-step" data-step="20">
+        <span class="step-indicator">Pergunta 18 de 18</span>
+        <h2 class="quiz-question">Se isso continuar do jeito que está, o que mais te preocupa?</h2>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="rasgando_dinheiro"><span class="option-indicator"></span>Continuar investindo tempo e dinheiro sem ver retorno real</label>
+          <label class="quiz-option" data-value="perder_confianca"><span class="option-indicator"></span>Perder confiança no meu trabalho</label>
+          <label class="quiz-option" data-value="alunos_frustrados"><span class="option-indicator"></span>Alunos frustrados</label>
+          <label class="quiz-option" data-value="desistir_escalar"><span class="option-indicator"></span>Desistir de escalar</label>
+        </div>
+        <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Ver meu diagnóstico →</button></div>
+      </div>
+      <div class="quiz-step" data-step="21">
+        <div class="email-step">
+          <h3>Seu diagnóstico está pronto! 🎉</h3>
+          <p>Para onde posso enviar o resultado completo?</p>
+          <div class="email-form">
+            <input type="text" class="email-input" id="userName" placeholder="Seu nome" required>
+            <input type="email" class="email-input" id="userEmail" placeholder="Seu melhor e-mail" required>
+            <button class="email-submit" onclick="submitEmail()">Ver meu diagnóstico agora</button>
+            <p class="email-privacy">🔒 Seus dados estão seguros. Não enviamos spam.</p>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-step" data-step="22">
+        <div class="loading-step">
+          <div class="loading-spinner"></div>
+          <h3>Analisando suas respostas...</h3>
+          <p>Estamos analisando onde a experiência do seu curso perde força ao longo da jornada.</p>
+        </div>
+      </div>
+      <div class="quiz-step" data-step="23">
+        <div class="result-step">
+          <span class="result-badge">📊 Seu Diagnóstico</span>
+          <h2 class="result-title" id="resultTitle">Dificuldade na Entrada do Aluno</h2>
+          <p class="result-subtitle" id="resultSubtitle">"O seu curso pode até ser bom — mas o aluno não entende isso rápido o suficiente."</p>
+          
+          <div class="result-card">
+            <h4>O que está acontecendo:</h4>
+            <ul class="result-list" id="resultList"></ul>
+          </div>
+          
+          <div class="result-secondary">
+            <p><strong>Segundo ponto de atenção:</strong> <span id="secondaryResult">Continuidade</span></p>
+          </div>
+          
+          <div class="session-block">
+            <p class="session-context">Na prática, essa dificuldade é o que chamamos de um <strong>ponto de perda de energia</strong> na experiência.</p>
+            <p class="session-context">Isso não significa que seu curso não funciona — significa que ele ainda não foi estruturado para tornar os resultados visíveis e consistentes para o aluno.</p>
+            
+            <div class="session-highlight">
+              <p>✨ A boa notícia: esse tipo de ponto pode ser corrigido com ajustes estratégicos, sem refazer tudo do zero.</p>
+            </div>
+            
+            <div class="session-info">
+              <h3>O que acontece na Sessão de Diagnóstico GAME-ON®</h3>
+              <p>Nesta sessão, analisamos juntos o seu curso, identificamos onde a experiência perde força e desenhamos os próximos ajustes mais inteligentes para o seu momento atual.</p>
+              <p>Não é uma consultoria genérica — é um olhar estratégico para estruturar engajamento, aplicação e continuidade antes de escalar.</p>
+            </div>
+            
+            <a href="#" class="session-cta-button" id="resultCTAButton">👉 Agendar Sessão de Diagnóstico GAME-ON® →</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    var CONFIG = {
+      sessionURL: 'https://seulink.com/agendar-sessao',
+      newsletterURL: 'https://seulink.com/newsletter',
+      mailingBossURL: 'https://mailingboss.com/lists/SEU_ID_LISTA/subscribe'
+    };
+    var currentStep = 0;
+    var answers = {};
+    var scores = { entrada: 0, continuidade: 0, acao: 0, prova: 0, fechamento: 0 };
+    var tieScores = { entrada: 0, continuidade: 0, acao: 0, prova: 0, fechamento: 0 };
+    var results = {
+      entrada: {
+        title: 'Dificuldade na Entrada do Aluno',
+        subtitle: '"O seu curso pode até ser bom — mas o aluno não entende isso rápido o suficiente."',
+        items: ['O aluno entra animado, mas logo se sente perdido', 'Não fica claro o que fazer primeiro', 'O valor real não é percebido nos primeiros dias', 'A motivação inicial evapora'],
+        anchor: 'Frase-âncora: "Eu vendo… mas o aluno não se conecta."',
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
+        ctaSubtitle: 'Corrigir o início sem refazer o curso'
+      },
+      continuidade: {
+        title: 'Dificuldade em Manter o Aluno Avançando',
+        subtitle: '"O problema não é o começo. É o que acontece depois do entusiasmo inicial."',
+        items: ['Alunos somem no meio do curso', 'Falta ritmo e sensação de progresso', 'O curso parece "longo demais"', 'O aluno perde o fio da jornada'],
+        anchor: 'Frase-âncora: "O aluno até começa… mas não continua."',
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
+        ctaSubtitle: 'Identificar onde desengata e manter ritmo'
+      },
+      acao: {
+        title: 'Dificuldade em Transformar Conteúdo em Ação',
+        subtitle: '"Seus alunos assistem, entendem… mas não transformam em resultado."',
+        items: ['Conteúdo é bom, mas passivo', 'Falta clareza do "o que fazer agora"', 'Resultados não ficam visíveis', 'Sem resultado, engajamento cai'],
+        anchor: 'Frase-âncora: "O aluno consome, mas não muda."',
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
+        ctaSubtitle: 'Transformar conteúdo em ação'
+      },
+      prova: {
+        title: 'Resultados Pouco Visíveis para o Aluno',
+        subtitle: '"O seu curso gera valor — mas isso não aparece para o mundo."',
+        items: ['Depoimentos só surgem quando você pede', 'Poucos indicam espontaneamente', 'Resultados não são celebrados', 'O impacto fica invisível'],
+        anchor: 'Frase-âncora: "Eu sei que funciona, mas ninguém vê."',
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
+        ctaSubtitle: 'Estruturar reconhecimento sem forçar'
+      },
+      fechamento: {
+        title: 'Dificuldade em Encerrar e Dar Continuidade à Jornada',
+        subtitle: '"Seus alunos não encerram ciclos — por isso não continuam com você."',
+        items: ['Muitos não concluem oficialmente', 'Falta sensação de jornada completa', 'O aluno sai "em silêncio"', 'Pouca recompra, pouco LTV'],
+        anchor: 'Frase-âncora: "O curso termina… mas nada acontece depois."',
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
+        ctaSubtitle: 'Fechar jornadas e abrir novos caminhos'
+      },
+      construcao: {
+        title: 'Experiência em CONSTRUÇÃO',
+        subtitle: '"Antes de corrigir vazamentos, o importante é não construí-los."',
+        items: ['Você ainda está estruturando', 'Aprenda a criar jornada que já nasce certa', 'Sem erros que custam caro depois'],
+        anchor: 'Comece certo desde o início.',
+        cta: 'Entrar na Newsletter GAME-ON®',
+        ctaSubtitle: 'Conteúdo para estruturar antes de lançar',
+        isNewsletter: true
+      }
+    };
+    function startQuiz() {
+      document.getElementById('landingPage').style.display = 'none';
+      document.getElementById('quizContainer').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    function nextStep() {
+      saveCurrentAnswer();
+      currentStep++;
+      if (currentStep === 22) {
+        showStep(currentStep);
+        updateProgress();
+        setTimeout(function() { calculateResult(); currentStep = 23; showStep(currentStep); }, 2500);
+        return;
+      }
+      showStep(currentStep);
+      updateProgress();
+      window.scrollTo(0, 0);
+    }
+    function prevStep() {
+      if (currentStep > 0) { currentStep--; showStep(currentStep); updateProgress(); window.scrollTo(0, 0); }
+    }
+    function showStep(step) {
+      var steps = document.querySelectorAll('.quiz-step');
+      for (var i = 0; i < steps.length; i++) { steps[i].classList.remove('active'); }
+      var stepEl = document.querySelector('.quiz-step[data-step="' + step + '"]');
+      if (stepEl) { stepEl.classList.add('active'); restoreSelection(stepEl); }
+    }
+    function updateProgress() {
+      var questionSteps = [1,2,3,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20];
+      var answered = 0;
+      for (var i = 0; i < questionSteps.length; i++) { if (answers[questionSteps[i]]) answered++; }
+      var progress = Math.round((answered / 18) * 100);
+      document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('progressText').textContent = progress + '%';
+    }
+    function saveCurrentAnswer() {
+      var stepEl = document.querySelector('.quiz-step[data-step="' + currentStep + '"]');
+      if (!stepEl) return;
+      var selectedOption = stepEl.querySelector('.quiz-option.selected');
+      if (!selectedOption) return;
+      var value = selectedOption.getAttribute('data-value');
+      answers[currentStep] = value;
+      var scoreType = stepEl.getAttribute('data-score');
+      var questionType = stepEl.getAttribute('data-type');
+      var isTiebreaker = stepEl.getAttribute('data-tiebreaker') === 'true';
+      if (scoreType && !isTiebreaker) {
+        var points = 0;
+        if (questionType === 'positive') { points = value === 'sim' ? 0 : value === 'as_vezes' ? 1 : 2; }
+        else if (questionType === 'negative') { points = value === 'sim' ? 2 : value === 'as_vezes' ? 1 : 0; }
+        scores[scoreType] += points;
+      }
+      if (isTiebreaker) {
+        var weight = parseInt(stepEl.getAttribute('data-weight')) || 1;
+        var tieTarget = selectedOption.getAttribute('data-tie');
+        if (tieTarget) tieScores[tieTarget] += weight;
+      }
+    }
+    function restoreSelection(stepEl) {
+      var savedAnswer = answers[stepEl.getAttribute('data-step')];
+      if (!savedAnswer) return;
+      var options = stepEl.querySelectorAll('.quiz-option');
+      for (var i = 0; i < options.length; i++) {
+        options[i].classList.remove('selected');
+        if (options[i].getAttribute('data-value') === savedAnswer) options[i].classList.add('selected');
+      }
+      var nextBtn = stepEl.querySelector('.btn-next');
+      if (nextBtn) nextBtn.disabled = false;
+    }
+    function calculateResult() {
+      if (answers[1] === 'nao_tenho') { showResult('construcao', null); return; }
+      var finalScores = {
+        entrada: scores.entrada + tieScores.entrada,
+        continuidade: scores.continuidade + tieScores.continuidade,
+        acao: scores.acao + tieScores.acao,
+        prova: scores.prova + tieScores.prova,
+        fechamento: scores.fechamento + tieScores.fechamento
+      };
+      var allLow = true;
+      for (var key in finalScores) { if (finalScores[key] > 2) allLow = false; }
+      if (allLow) { showResult('construcao', null); return; }
+      var sortedScores = [];
+      for (var k in finalScores) { sortedScores.push([k, finalScores[k]]); }
+      sortedScores.sort(function(a, b) { return b[1] - a[1]; });
+      showResult(sortedScores[0][0], sortedScores[1][0]);
+    }
+    function showResult(primary, secondary) {
+      var result = results[primary];
+      document.getElementById('resultTitle').textContent = result.title;
+      document.getElementById('resultSubtitle').textContent = result.subtitle;
+      var listHtml = '';
+      for (var i = 0; i < result.items.length; i++) {
+        listHtml += '<li>⚠️ ' + result.items[i] + '</li>';
+      }
+      document.getElementById('resultList').innerHTML = listHtml;
+      var ctaBtn = document.getElementById('resultCTAButton');
+      ctaBtn.href = result.isNewsletter ? CONFIG.newsletterURL : CONFIG.sessionURL;
+      if (result.isNewsletter) {
+        ctaBtn.textContent = '👉 ' + result.cta + ' →';
+      }
+      var secondaryEl = document.querySelector('.result-secondary');
+      if (secondary && !result.isNewsletter) {
+        var names = { entrada: 'Entrada', continuidade: 'Continuidade', acao: 'Ação', prova: 'Prova Social', fechamento: 'Fechamento' };
+        document.getElementById('secondaryResult').textContent = names[secondary];
+        secondaryEl.style.display = 'block';
+      } else { secondaryEl.style.display = 'none'; }
+    }
+    function submitEmail() {
+      var name = document.getElementById('userName').value.trim();
+      var email = document.getElementById('userEmail').value.trim();
+      if (!name || !email) { alert('Por favor, preencha nome e email.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Email inválido.'); return; }
+      calculateResult();
+      var resultTag = 'construcao';
+      if (answers[1] !== 'nao_tenho') {
+        var finalScores = {
+          entrada: scores.entrada + tieScores.entrada,
+          continuidade: scores.continuidade + tieScores.continuidade,
+          acao: scores.acao + tieScores.acao,
+          prova: scores.prova + tieScores.prova,
+          fechamento: scores.fechamento + tieScores.fechamento
+        };
+        var sortedScores = [];
+        for (var k in finalScores) { sortedScores.push([k, finalScores[k]]); }
+        sortedScores.sort(function(a, b) { return b[1] - a[1]; });
+        resultTag = sortedScores[0][0];
+      }
+      sendToMailingBoss(name, email, resultTag);
+      nextStep();
+    }
+    function sendToMailingBoss(name, email, resultTag) {
+      var iframe = document.getElementById('mailing-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'mailing-iframe';
+        iframe.name = 'mailing-iframe';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = CONFIG.mailingBossURL;
+      form.target = 'mailing-iframe';
+      form.style.display = 'none';
+      
+      // Calcular segundo resultado
+      var secondResult = '';
+      if (answers[1] !== 'nao_tenho') {
+        var finalScores = {
+          entrada: scores.entrada + tieScores.entrada,
+          continuidade: scores.continuidade + tieScores.continuidade,
+          acao: scores.acao + tieScores.acao,
+          prova: scores.prova + tieScores.prova,
+          fechamento: scores.fechamento + tieScores.fechamento
+        };
+        var sortedScores = [];
+        for (var k in finalScores) { sortedScores.push([k, finalScores[k]]); }
+        sortedScores.sort(function(a, b) { return b[1] - a[1]; });
+        secondResult = sortedScores[1] ? sortedScores[1][0] : '';
+      }
+      
+      // Mapear respostas para textos legíveis
+      var temCursoMap = {
+        'sim_vendo': 'Sim, já vendo',
+        'sim_estruturando': 'Sim, estruturando',
+        'nao_tenho': 'Ainda não tenho'
+      };
+      var incômodoMap = {
+        'falta_vendas': 'Falta de vendas',
+        'falta_engajamento': 'Falta de engajamento',
+        'sem_resultado': 'Alunos não chegam ao resultado',
+        'nao_sei': 'Não sei exatamente'
+      };
+      var problemaMap = {
+        'marketing': 'Marketing',
+        'conteudo': 'Conteúdo',
+        'estrutura': 'Estrutura da experiência',
+        'nao_sei': 'Não sei dizer'
+      };
+      var sentimentoMap = {
+        'algo_errado': 'Meu curso é bom, mas algo está errado',
+        'entrego_mais': 'Entrego mais do que o aluno aproveita',
+        'medo_escalar': 'Medo de escalar e aumentar frustração',
+        'nao_sei': 'Não sei onde está o problema'
+      };
+      var preocupacaoMap = {
+        'rasgando_dinheiro': 'Continuar investindo sem retorno',
+        'perder_confianca': 'Perder confiança no meu trabalho',
+        'alunos_frustrados': 'Alunos frustrados',
+        'desistir_escalar': 'Desistir de escalar'
+      };
+      
+      var fields = {
+        'name': name,
+        'email': email,
+        // Resultado principal
+        'custom_resultado_principal': resultTag,
+        'custom_resultado_secundario': secondResult,
+        // Contexto (P1-P3)
+        'custom_tem_curso': temCursoMap[answers[1]] || answers[1] || '',
+        'custom_incomodo': incômodoMap[answers[2]] || answers[2] || '',
+        'custom_problema_em': problemaMap[answers[3]] || answers[3] || '',
+        // Emocionais (P17-P18)
+        'custom_sentimento': sentimentoMap[answers[19]] || answers[19] || '',
+        'custom_preocupacao': preocupacaoMap[answers[20]] || answers[20] || '',
+        // Scores finais
+        'custom_score_entrada': String(scores.entrada + tieScores.entrada),
+        'custom_score_continuidade': String(scores.continuidade + tieScores.continuidade),
+        'custom_score_acao': String(scores.acao + tieScores.acao),
+        'custom_score_prova': String(scores.prova + tieScores.prova),
+        'custom_score_fechamento': String(scores.fechamento + tieScores.fechamento),
+        // Metadados
+        'custom_quiz_source': 'quiz-diagnostico-gameon',
+        'custom_quiz_data': new Date().toISOString().split('T')[0]
+      };
+      
+      for (var key in fields) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
+      console.log('Lead enviado:', fields);
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      var options = document.querySelectorAll('.quiz-option');
+      for (var i = 0; i < options.length; i++) {
+        options[i].addEventListener('click', function() {
+          var parent = this.closest('.quiz-options');
+          var siblings = parent.querySelectorAll('.quiz-option');
+          for (var j = 0; j < siblings.length; j++) { siblings[j].classList.remove('selected'); }
+          this.classList.add('selected');
+          var nextBtn = this.closest('.quiz-step').querySelector('.btn-next');
+          if (nextBtn) nextBtn.disabled = false;
+        });
+      }
+      document.getElementById('userEmail').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') submitEmail();
+      });
+    });
+  </script>
+</body>
+</html>
