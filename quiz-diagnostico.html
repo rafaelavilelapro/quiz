@@ -134,14 +134,15 @@
     .result-cta-button { display: inline-flex; align-items: center; gap: 1rem; background: var(--accent); color: var(--primary-dark); font-size: 1.1rem; font-weight: 700; padding: 1.5rem 3rem; border-radius: 16px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(212, 168, 83, 0.4); text-decoration: none; }
     .result-cta-button:hover { background: var(--accent-light); transform: translateY(-2px); }
     .result-cta-subtitle { margin-top: 1rem; font-size: 0.9rem; color: var(--gray-600); }
-    .result-secondary { margin-top: 2rem; margin-bottom: 2rem; }
-    .result-secondary p { font-size: 0.95rem; color: var(--gray-600); background: var(--gray-100); padding: 1rem 1.5rem; border-radius: 8px; display: inline-block; }
-    .result-secondary strong { color: var(--gray-800); }
+    .result-secondary { margin-top: 2rem; margin-bottom: 2rem; background: var(--white); border-radius: 12px; padding: 1.5rem; border-left: 3px solid var(--accent); box-shadow: 0 2px 8px rgba(26, 54, 93, 0.06); }
+    .result-secondary h4 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+    .result-secondary p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; margin: 0; }
     .session-block { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 20px; padding: 2.5rem; margin-top: 1rem; text-align: left; }
     .session-context { font-size: 1rem; color: rgba(255, 255, 255, 0.9); line-height: 1.8; margin: 0 0 1rem 0; }
     .session-context strong { color: var(--accent); }
     .session-highlight { background: rgba(212, 168, 83, 0.15); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
     .session-highlight p { font-size: 0.95rem; color: var(--accent-light); font-weight: 500; margin: 0; }
+    .session-transition { font-size: 1rem; color: rgba(255, 255, 255, 0.95); line-height: 1.7; margin: 1.5rem 0; font-style: italic; }
     .session-info { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
     .session-info h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem; }
     .session-info p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); line-height: 1.7; margin: 0 0 0.75rem 0; }
@@ -471,7 +472,7 @@
       <div class="quiz-step" data-step="23">
         <div class="result-step">
           <span class="result-badge">📊 Seu Diagnóstico</span>
-          <h2 class="result-title" id="resultTitle">Dificuldade na Entrada do Aluno</h2>
+          <h2 class="result-title" id="resultTitle">Dificuldade em Ativar o Aluno no Início da Jornada</h2>
           <p class="result-subtitle" id="resultSubtitle">"O seu curso pode até ser bom — mas o aluno não entende isso rápido o suficiente."</p>
           
           <div class="result-card">
@@ -479,8 +480,9 @@
             <ul class="result-list" id="resultList"></ul>
           </div>
           
-          <div class="result-secondary">
-            <p><strong>Segundo ponto de atenção:</strong> <span id="secondaryResult">Continuidade</span></p>
+          <div class="result-secondary" id="resultSecondary">
+            <h4 id="secondPointTitle">Segundo ponto de atenção: Expectativa desalinhada logo no começo</h4>
+            <p id="secondPointText">Mesmo quando o aluno entra, ele não entende claramente o que vai mudar para ele — o que reduz o envolvimento já nos primeiros passos.</p>
           </div>
           
           <div class="session-block">
@@ -490,6 +492,8 @@
             <div class="session-highlight">
               <p>✨ A boa notícia: esse tipo de ponto pode ser corrigido com ajustes estratégicos, sem refazer tudo do zero.</p>
             </div>
+            
+            <p class="session-transition">É justamente para identificar e corrigir esse tipo de ponto que existe a Sessão de Diagnóstico GAME-ON®.</p>
             
             <div class="session-info">
               <h3>O que acontece na Sessão de Diagnóstico GAME-ON®</h3>
@@ -515,53 +519,65 @@
     var tieScores = { entrada: 0, continuidade: 0, acao: 0, prova: 0, fechamento: 0 };
     var results = {
       entrada: {
-        title: 'Dificuldade na Entrada do Aluno',
+        title: 'Dificuldade em Ativar o Aluno no Início da Jornada',
         subtitle: '"O seu curso pode até ser bom — mas o aluno não entende isso rápido o suficiente."',
         items: ['O aluno entra animado, mas logo se sente perdido', 'Não fica claro o que fazer primeiro', 'O valor real não é percebido nos primeiros dias', 'A motivação inicial evapora'],
-        anchor: 'Frase-âncora: "Eu vendo… mas o aluno não se conecta."',
-        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
-        ctaSubtitle: 'Corrigir o início sem refazer o curso'
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®'
       },
       continuidade: {
         title: 'Dificuldade em Manter o Aluno Avançando',
         subtitle: '"O problema não é o começo. É o que acontece depois do entusiasmo inicial."',
         items: ['Alunos somem no meio do curso', 'Falta ritmo e sensação de progresso', 'O curso parece "longo demais"', 'O aluno perde o fio da jornada'],
-        anchor: 'Frase-âncora: "O aluno até começa… mas não continua."',
-        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
-        ctaSubtitle: 'Identificar onde desengata e manter ritmo'
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®'
       },
       acao: {
         title: 'Dificuldade em Transformar Conteúdo em Ação',
         subtitle: '"Seus alunos assistem, entendem… mas não transformam em resultado."',
         items: ['Conteúdo é bom, mas passivo', 'Falta clareza do "o que fazer agora"', 'Resultados não ficam visíveis', 'Sem resultado, engajamento cai'],
-        anchor: 'Frase-âncora: "O aluno consome, mas não muda."',
-        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
-        ctaSubtitle: 'Transformar conteúdo em ação'
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®'
       },
       prova: {
         title: 'Resultados Pouco Visíveis para o Aluno',
         subtitle: '"O seu curso gera valor — mas isso não aparece para o mundo."',
         items: ['Depoimentos só surgem quando você pede', 'Poucos indicam espontaneamente', 'Resultados não são celebrados', 'O impacto fica invisível'],
-        anchor: 'Frase-âncora: "Eu sei que funciona, mas ninguém vê."',
-        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
-        ctaSubtitle: 'Estruturar reconhecimento sem forçar'
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®'
       },
       fechamento: {
         title: 'Dificuldade em Encerrar e Dar Continuidade à Jornada',
         subtitle: '"Seus alunos não encerram ciclos — por isso não continuam com você."',
         items: ['Muitos não concluem oficialmente', 'Falta sensação de jornada completa', 'O aluno sai "em silêncio"', 'Pouca recompra, pouco LTV'],
-        anchor: 'Frase-âncora: "O curso termina… mas nada acontece depois."',
-        cta: 'Agendar Sessão de Diagnóstico GAME-ON®',
-        ctaSubtitle: 'Fechar jornadas e abrir novos caminhos'
+        cta: 'Agendar Sessão de Diagnóstico GAME-ON®'
       },
       construcao: {
-        title: 'Experiência em CONSTRUÇÃO',
+        title: 'Experiência em Construção',
         subtitle: '"Antes de corrigir vazamentos, o importante é não construí-los."',
-        items: ['Você ainda está estruturando', 'Aprenda a criar jornada que já nasce certa', 'Sem erros que custam caro depois'],
-        anchor: 'Comece certo desde o início.',
+        items: ['Você ainda está estruturando seu curso ou mentoria', 'O mais inteligente agora é aprender a criar uma jornada que já nasce certa', 'Sem os erros que depois custam caro pra corrigir'],
         cta: 'Entrar na Newsletter GAME-ON®',
-        ctaSubtitle: 'Conteúdo para estruturar antes de lançar',
         isNewsletter: true
+      }
+    };
+    
+    // Textos do segundo ponto baseados no segundo maior score
+    var secondPointTexts = {
+      entrada: {
+        title: 'Expectativa desalinhada logo no começo',
+        text: 'Mesmo quando o aluno entra, ele não entende claramente o que vai mudar para ele — o que reduz o envolvimento já nos primeiros passos.'
+      },
+      continuidade: {
+        title: 'Ritmo inconsistente ao longo do curso',
+        text: 'Sem marcos claros de progresso, o aluno perde a sensação de avanço e passa a adiar o consumo do conteúdo.'
+      },
+      acao: {
+        title: 'Excesso de informação sem aplicação guiada',
+        text: 'O aluno até entende o conteúdo, mas não sabe exatamente o que fazer depois — e acaba não fazendo nada.'
+      },
+      prova: {
+        title: 'Conquistas não reconhecidas ao longo da jornada',
+        text: 'Mesmo quando há progresso, ele não é percebido nem registrado — o que enfraquece depoimentos e recomendações.'
+      },
+      fechamento: {
+        title: 'Ausência de um próximo passo claro para o aluno',
+        text: 'Sem um fechamento simbólico e um convite natural para a continuidade, o aluno encerra a experiência sem saber como seguir.'
       }
     };
     function startQuiz() {
@@ -663,12 +679,17 @@
       if (result.isNewsletter) {
         ctaBtn.textContent = '👉 ' + result.cta + ' →';
       }
-      var secondaryEl = document.querySelector('.result-secondary');
-      if (secondary && !result.isNewsletter) {
-        var names = { entrada: 'Entrada', continuidade: 'Continuidade', acao: 'Ação', prova: 'Prova Social', fechamento: 'Fechamento' };
-        document.getElementById('secondaryResult').textContent = names[secondary];
+      
+      // Segundo ponto de atenção baseado no SEGUNDO MAIOR SCORE
+      var secondaryEl = document.getElementById('resultSecondary');
+      if (secondary && secondPointTexts[secondary] && !result.isNewsletter) {
+        var secondPoint = secondPointTexts[secondary];
+        document.getElementById('secondPointTitle').textContent = 'Segundo ponto de atenção: ' + secondPoint.title;
+        document.getElementById('secondPointText').textContent = secondPoint.text;
         secondaryEl.style.display = 'block';
-      } else { secondaryEl.style.display = 'none'; }
+      } else {
+        secondaryEl.style.display = 'none';
+      }
     }
     function submitEmail() {
       var name = document.getElementById('userName').value.trim();
@@ -710,6 +731,7 @@
       
       // Calcular segundo resultado
       var secondResult = '';
+      var secondResultLabel = '';
       if (answers[1] !== 'nao_tenho') {
         var finalScores = {
           entrada: scores.entrada + tieScores.entrada,
@@ -724,30 +746,48 @@
         secondResult = sortedScores[1] ? sortedScores[1][0] : '';
       }
       
-      // Mapear respostas para textos legíveis
+      // Labels para resultados
+      var resultadoLabels = {
+        'entrada': 'Entrada',
+        'continuidade': 'Continuidade',
+        'acao': 'Ação',
+        'prova': 'Prova Social',
+        'fechamento': 'Fechamento',
+        'construcao': 'Em Construção'
+      };
+      
+      // Mapear P1: tem_curso
       var temCursoMap = {
         'sim_vendo': 'Sim, já vendo',
         'sim_estruturando': 'Sim, estruturando',
         'nao_tenho': 'Ainda não tenho'
       };
-      var incômodoMap = {
+      
+      // Mapear P2: incomodo
+      var incomodoMap = {
         'falta_vendas': 'Falta de vendas',
         'falta_engajamento': 'Falta de engajamento',
         'sem_resultado': 'Alunos não chegam ao resultado',
         'nao_sei': 'Não sei exatamente'
       };
+      
+      // Mapear P3: problema_em
       var problemaMap = {
         'marketing': 'Marketing',
         'conteudo': 'Conteúdo',
         'estrutura': 'Estrutura da experiência',
         'nao_sei': 'Não sei dizer'
       };
+      
+      // Mapear P17: sentimento
       var sentimentoMap = {
         'algo_errado': 'Meu curso é bom, mas algo está errado',
         'entrego_mais': 'Entrego mais do que o aluno aproveita',
         'medo_escalar': 'Medo de escalar e aumentar frustração',
         'nao_sei': 'Não sei onde está o problema'
       };
+      
+      // Mapear P18: preocupacao
       var preocupacaoMap = {
         'rasgando_dinheiro': 'Continuar investindo sem retorno',
         'perder_confianca': 'Perder confiança no meu trabalho',
@@ -756,27 +796,40 @@
       };
       
       var fields = {
+        // Dados básicos
         'name': name,
         'email': email,
-        // Resultado principal
-        'custom_resultado_principal': resultTag,
-        'custom_resultado_secundario': secondResult,
-        // Contexto (P1-P3)
-        'custom_tem_curso': temCursoMap[answers[1]] || answers[1] || '',
-        'custom_incomodo': incômodoMap[answers[2]] || answers[2] || '',
-        'custom_problema_em': problemaMap[answers[3]] || answers[3] || '',
-        // Emocionais (P17-P18)
-        'custom_sentimento': sentimentoMap[answers[19]] || answers[19] || '',
-        'custom_preocupacao': preocupacaoMap[answers[20]] || answers[20] || '',
+        
+        // Resultados
+        'quiz_resultado': resultTag,
+        'resultado_principal': resultadoLabels[resultTag] || resultTag,
+        'resultado_secundario': resultadoLabels[secondResult] || secondResult,
+        
+        // P1: Tem curso?
+        'tem_curso': temCursoMap[answers[1]] || '',
+        
+        // P2: O que mais incomoda?
+        'incomodo': incomodoMap[answers[2]] || '',
+        
+        // P3: Onde está o problema?
+        'problema_em': problemaMap[answers[3]] || '',
+        
+        // P17: Sentimento atual
+        'sentimento': sentimentoMap[answers[19]] || '',
+        
+        // P18: Preocupação se não mudar
+        'preocupacao': preocupacaoMap[answers[20]] || '',
+        
         // Scores finais
-        'custom_score_entrada': String(scores.entrada + tieScores.entrada),
-        'custom_score_continuidade': String(scores.continuidade + tieScores.continuidade),
-        'custom_score_acao': String(scores.acao + tieScores.acao),
-        'custom_score_prova': String(scores.prova + tieScores.prova),
-        'custom_score_fechamento': String(scores.fechamento + tieScores.fechamento),
+        'score_entrada': String(scores.entrada + tieScores.entrada),
+        'score_continuidade': String(scores.continuidade + tieScores.continuidade),
+        'score_acao': String(scores.acao + tieScores.acao),
+        'score_prova': String(scores.prova + tieScores.prova),
+        'score_fechamento': String(scores.fechamento + tieScores.fechamento),
+        
         // Metadados
-        'custom_quiz_source': 'quiz-diagnostico-gameon',
-        'custom_quiz_data': new Date().toISOString().split('T')[0]
+        'quiz_source': 'quiz-diagnostico-gameon',
+        'quiz_data': new Date().toISOString().split('T')[0]
       };
       
       for (var key in fields) {
