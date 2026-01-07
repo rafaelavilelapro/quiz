@@ -759,23 +759,8 @@
       nextStep();
     }
     function sendToMailingBoss(name, email, resultTag) {
-      var iframe = document.getElementById('mailing-iframe');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.id = 'mailing-iframe';
-        iframe.name = 'mailing-iframe';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-      var form = document.createElement('form');
-      form.method = 'POST';
-      form.action = CONFIG.mailingBossURL;
-      form.target = 'mailing-iframe';
-      form.style.display = 'none';
-      
       // Calcular segundo resultado
       var secondResult = '';
-      var secondResultLabel = '';
       if (answers[1] !== 'nao_tenho') {
         var finalScores = {
           entrada: scores.entrada + tieScores.entrada,
@@ -839,54 +824,41 @@
         'desistir_escalar': 'Desistir de escalar'
       };
       
-      var fields = {
-        // Dados básicos
-        'name': name,
-        'email': email,
-        
-        // Resultados
-        'quiz_resultado': resultTag,
-        'resultado_principal': resultadoLabels[resultTag] || resultTag,
-        'resultado_secundario': resultadoLabels[secondResult] || secondResult,
-        
-        // P1: Tem curso?
-        'tem_curso': temCursoMap[answers[1]] || '',
-        
-        // P2: O que mais incomoda?
-        'incomodo': incomodoMap[answers[2]] || '',
-        
-        // P3: Onde está o problema?
-        'problema_em': problemaMap[answers[3]] || '',
-        
-        // P17: Sentimento atual
-        'sentimento': sentimentoMap[answers[19]] || '',
-        
-        // P18: Preocupação se não mudar
-        'preocupacao': preocupacaoMap[answers[20]] || '',
-        
-        // Scores finais
-        'score_entrada': String(scores.entrada + tieScores.entrada),
-        'score_continuidade': String(scores.continuidade + tieScores.continuidade),
-        'score_acao': String(scores.acao + tieScores.acao),
-        'score_prova': String(scores.prova + tieScores.prova),
-        'score_fechamento': String(scores.fechamento + tieScores.fechamento),
-        
-        // Metadados
-        'quiz_source': 'quiz-diagnostico-gameon',
-        'quiz_data': new Date().toISOString().split('T')[0]
-      };
+      // Preencher formulário oculto
+      document.getElementById('mb_name').value = name;
+      document.getElementById('mb_email').value = email;
       
-      for (var key in fields) {
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = fields[key];
-        form.appendChild(input);
-      }
-      document.body.appendChild(form);
-      form.submit();
-      form.remove();
-      console.log('Lead enviado:', fields);
+      // Resultados
+      document.getElementById('mb_quiz_resultado').value = resultTag;
+      document.getElementById('mb_resultado_principal').value = resultadoLabels[resultTag] || resultTag;
+      document.getElementById('mb_resultado_secundario').value = resultadoLabels[secondResult] || secondResult;
+      
+      // Respostas qualitativas
+      document.getElementById('mb_tem_curso').value = temCursoMap[answers[1]] || '';
+      document.getElementById('mb_incomodo').value = incomodoMap[answers[2]] || '';
+      document.getElementById('mb_problema_em').value = problemaMap[answers[3]] || '';
+      document.getElementById('mb_sentimento').value = sentimentoMap[answers[19]] || '';
+      document.getElementById('mb_preocupacao').value = preocupacaoMap[answers[20]] || '';
+      
+      // Scores
+      document.getElementById('mb_score_entrada').value = String(scores.entrada + tieScores.entrada);
+      document.getElementById('mb_score_continuidade').value = String(scores.continuidade + tieScores.continuidade);
+      document.getElementById('mb_score_acao').value = String(scores.acao + tieScores.acao);
+      document.getElementById('mb_score_prova').value = String(scores.prova + tieScores.prova);
+      document.getElementById('mb_score_fechamento').value = String(scores.fechamento + tieScores.fechamento);
+      
+      // Data
+      document.getElementById('mb_quiz_data').value = new Date().toISOString().split('T')[0];
+      
+      // Enviar formulário
+      document.getElementById('mailingBossForm').submit();
+      
+      console.log('Lead enviado para Mailing Boss:', {
+        name: name,
+        email: email,
+        resultado: resultTag,
+        secundario: secondResult
+      });
     }
     document.addEventListener('DOMContentLoaded', function() {
       var options = document.querySelectorAll('.quiz-option');
@@ -905,5 +877,45 @@
       });
     });
   </script>
+
+  <!-- FORMULÁRIO MAILING BOSS (oculto) -->
+  <form
+    id="mailingBossForm"
+    method="POST"
+    action="https://mailingboss.com/lists/695d642bae830/subscribe"
+    target="mailing-iframe"
+    style="display:none;"
+  >
+    <!-- Campos padrão -->
+    <input type="text" name="name" id="mb_name">
+    <input type="email" name="email" id="mb_email">
+
+    <!-- Resultado do quiz -->
+    <input type="hidden" name="quiz_resultado" id="mb_quiz_resultado">
+    <input type="hidden" name="resultado_principal" id="mb_resultado_principal">
+    <input type="hidden" name="resultado_secundario" id="mb_resultado_secundario">
+
+    <!-- Qualificação -->
+    <input type="hidden" name="tem_curso" id="mb_tem_curso">
+    <input type="hidden" name="incomodo" id="mb_incomodo">
+    <input type="hidden" name="problema_em" id="mb_problema_em">
+    <input type="hidden" name="sentimento" id="mb_sentimento">
+    <input type="hidden" name="preocupacao" id="mb_preocupacao">
+
+    <!-- Scores -->
+    <input type="hidden" name="score_entrada" id="mb_score_entrada">
+    <input type="hidden" name="score_continuidade" id="mb_score_continuidade">
+    <input type="hidden" name="score_acao" id="mb_score_acao">
+    <input type="hidden" name="score_prova" id="mb_score_prova">
+    <input type="hidden" name="score_fechamento" id="mb_score_fechamento">
+
+    <!-- Metadados -->
+    <input type="hidden" name="quiz_source" id="mb_quiz_source" value="quiz-diagnostico-gameon">
+    <input type="hidden" name="quiz_data" id="mb_quiz_data">
+  </form>
+  
+  <!-- Iframe oculto para não redirecionar -->
+  <iframe name="mailing-iframe" id="mailing-iframe" style="display:none;"></iframe>
+
 </body>
 </html>
