@@ -1,1 +1,1 @@
-# Quiz
+# Diagnóstico Rápido GAME-ON
