@@ -33,6 +33,16 @@
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=820387444076157&ev=PageView&noscript=1"/></noscript>
 
+  <!-- Rastreador Brevo -->
+  <script src="https://cdn.brevo.com/js/sdk-loader.js" async></script>
+  <script>
+    window.Brevo = window.Brevo || [];
+    Brevo.push([
+      "init",
+      { client_key: "6attwbpquzmrcb50vdvbm9ug" }
+    ]);
+  </script>
+
   <style>
     :root {
       --primary: #1A365D;
@@ -314,7 +324,6 @@
           <button class="btn-next" onclick="nextStep()">Continuar →</button>
         </div>
       </div>
-      <!-- PERGUNTA 4 - AJUSTADA: adicionado "Não sei" -->
       <div class="quiz-step" data-step="5" data-score="entrada" data-type="positive">
         <span class="step-indicator">Pergunta 4 de 18</span>
         <h2 class="quiz-question">Depois que o aluno entra, ele entende claramente o valor do curso?</h2>
@@ -346,7 +355,6 @@
         </div>
         <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
       </div>
-      <!-- PERGUNTA 7 - AJUSTADA: adicionado "Não sei" -->
       <div class="quiz-step" data-step="8" data-score="continuidade" data-type="negative">
         <span class="step-indicator">Pergunta 7 de 18</span>
         <h2 class="quiz-question">Os alunos sentem que o curso é longo, confuso ou cansativo?</h2>
@@ -358,7 +366,6 @@
         </div>
         <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
       </div>
-      <!-- PERGUNTA 8 - AJUSTADA: adicionado "Não sei" -->
       <div class="quiz-step" data-step="9" data-score="acao" data-type="negative">
         <span class="step-indicator">Pergunta 8 de 18</span>
         <h2 class="quiz-question">Os alunos assistem às aulas, mas aplicam pouco o que aprendem?</h2>
@@ -390,7 +397,6 @@
         </div>
         <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
       </div>
-      <!-- PERGUNTA 11 - AJUSTADA: removido "raramente", adicionado "Não sei" -->
       <div class="quiz-step" data-step="12" data-score="prova" data-type="negative">
         <span class="step-indicator">Pergunta 11 de 18</span>
         <h2 class="quiz-question">Seus alunos indicam seu curso para outras pessoas?</h2>
@@ -402,7 +408,6 @@
         </div>
         <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
       </div>
-      <!-- PERGUNTA 12 - AJUSTADA: texto mais claro -->
       <div class="quiz-step" data-step="13" data-score="fechamento" data-type="negative">
         <span class="step-indicator">Pergunta 12 de 18</span>
         <h2 class="quiz-question">A porcentagem de alunos que concluem o curso oficialmente é pequena?</h2>
@@ -431,7 +436,6 @@
           <button class="btn-next" onclick="nextStep()">Continuar →</button>
         </div>
       </div>
-      <!-- PERGUNTA 14 - AJUSTADA: alinhamento do texto "continuar" vs "continuidade" -->
       <div class="quiz-step" data-step="16" data-tiebreaker="true" data-weight="2">
         <span class="step-indicator">Pergunta 14 de 18</span>
         <h2 class="quiz-question">O que mais te incomoda hoje?</h2>
@@ -454,7 +458,6 @@
         </div>
         <div class="quiz-nav"><button class="btn-back" onclick="prevStep()">← Voltar</button><button class="btn-next" onclick="nextStep()" disabled>Continuar →</button></div>
       </div>
-      <!-- PERGUNTA 16 - AJUSTADA: texto mais claro -->
       <div class="quiz-step" data-step="18" data-tiebreaker="true" data-weight="3">
         <span class="step-indicator">Pergunta 16 de 18</span>
         <h2 class="quiz-question">Se você pudesse resolver só UMA coisa agora, qual seria?</h2>
@@ -564,16 +567,13 @@
   <script>
     // ============ CONFIGURAÇÕES ============
     var CONFIG = {
-      // URLs de destino
       sessionURL: 'https://api.whatsapp.com/send/?phone=5518996923377&text=Ol%C3%A1%21+Quero+agendar+Sess%C3%A3o+de+Diagn%C3%B3stico+GAME-ON',
       newsletterURL: 'https://rafaelavilelanews.beehiiv.com/',
-      
-      // Apps Script (Brevo integration)
       appsScriptURL: 'https://script.google.com/macros/s/AKfycbwq_uz1GgU5vaVa82jqIDpDMxkAYLHt172-Pfnrk8oKwOf1H9xOni4nQhQJKbwMP8Ba/exec'
     };
     // =======================================
 
-    // Captura parâmetros da URL (email, UTMs)
+    // Captura parâmetros da URL
     var urlParams = new URLSearchParams(window.location.search);
     var emailFromURL = urlParams.get('email') || '';
     var utmSource = urlParams.get('utm_source') || '';
@@ -632,26 +632,56 @@
     };
     
     var secondPointTexts = {
-      entrada: {
-        title: 'Expectativa desalinhada logo no começo',
-        text: 'Mesmo quando o aluno entra, ele não entende claramente o que vai mudar para ele — o que reduz o envolvimento já nos primeiros passos.'
-      },
-      continuidade: {
-        title: 'Ritmo inconsistente ao longo do curso',
-        text: 'Sem marcos claros de progresso, o aluno perde a sensação de avanço e passa a adiar o consumo do conteúdo.'
-      },
-      acao: {
-        title: 'Excesso de informação sem aplicação guiada',
-        text: 'O aluno até entende o conteúdo, mas não sabe exatamente o que fazer depois — e acaba não fazendo nada.'
-      },
-      prova: {
-        title: 'Conquistas não reconhecidas ao longo da jornada',
-        text: 'Mesmo quando há progresso, ele não é percebido nem registrado — o que enfraquece depoimentos e recomendações.'
-      },
-      fechamento: {
-        title: 'Ausência de um próximo passo claro para o aluno',
-        text: 'Sem um fechamento simbólico e um convite natural para a continuidade, o aluno encerra a experiência sem saber como seguir.'
-      }
+      entrada: { title: 'Expectativa desalinhada logo no começo', text: 'Mesmo quando o aluno entra, ele não entende claramente o que vai mudar para ele — o que reduz o envolvimento já nos primeiros passos.' },
+      continuidade: { title: 'Ritmo inconsistente ao longo do curso', text: 'Sem marcos claros de progresso, o aluno perde a sensação de avanço e passa a adiar o consumo do conteúdo.' },
+      acao: { title: 'Excesso de informação sem aplicação guiada', text: 'O aluno até entende o conteúdo, mas não sabe exatamente o que fazer depois — e acaba não fazendo nada.' },
+      prova: { title: 'Conquistas não reconhecidas ao longo da jornada', text: 'Mesmo quando há progresso, ele não é percebido nem registrado — o que enfraquece depoimentos e recomendações.' },
+      fechamento: { title: 'Ausência de um próximo passo claro para o aluno', text: 'Sem um fechamento simbólico e um convite natural para a continuidade, o aluno encerra a experiência sem saber como seguir.' }
+    };
+
+    // Labels para resultados
+    var resultadoLabels = {
+      'entrada': 'Entrada',
+      'continuidade': 'Continuidade',
+      'acao': 'Acao',
+      'prova': 'Prova Social',
+      'fechamento': 'Fechamento',
+      'construcao': 'Em Construcao'
+    };
+
+    // Mapear respostas
+    var temCursoMap = {
+      'sim_vendo': 'Sim, já vendo',
+      'sim_estruturando': 'Sim, estruturando',
+      'nao_tenho': 'Ainda não tenho'
+    };
+    
+    var incomodoMap = {
+      'falta_vendas': 'Falta de vendas',
+      'falta_engajamento': 'Falta de engajamento',
+      'sem_resultado': 'Alunos não chegam ao resultado',
+      'nao_sei': 'Não sei exatamente'
+    };
+    
+    var problemaMap = {
+      'marketing': 'Marketing',
+      'conteudo': 'Conteúdo',
+      'estrutura': 'Estrutura da experiência',
+      'nao_sei': 'Não sei dizer'
+    };
+    
+    var sentimentoMap = {
+      'algo_errado': 'Meu curso é bom, mas algo está errado',
+      'entrego_mais': 'Entrego mais do que o aluno aproveita',
+      'medo_escalar': 'Medo de escalar e aumentar frustração',
+      'nao_sei': 'Não sei onde está o problema'
+    };
+    
+    var preocupacaoMap = {
+      'rasgando_dinheiro': 'Continuar investindo sem retorno',
+      'perder_confianca': 'Perder confiança no meu trabalho',
+      'alunos_frustrados': 'Alunos frustrados',
+      'desistir_escalar': 'Desistir de escalar'
     };
 
     // ============ TRACKING FUNCTIONS ============
@@ -698,22 +728,15 @@
       document.getElementById('landingPage').style.display = 'none';
       document.getElementById('quizContainer').classList.add('active');
       window.scrollTo(0, 0);
-      
-      // Track quiz page view
       trackEvent('quiz_view', { page: 'diagnostico-gameon' });
     }
 
     function nextStep() {
       saveCurrentAnswer();
       
-      // Se está saindo do step 0 (clicou "Vamos começar"), dispara quiz_iniciou
       if (currentStep === 0 && !quizStarted) {
         quizStarted = true;
-        
-        // Track quiz_iniciou
         trackEvent('quiz_start', { quiz_name: 'diagnostico-gameon' });
-        
-        // Envia para Apps Script (se tiver email da URL)
         sendToAppsScript('evento', {
           email: emailFromURL,
           evento: 'quiz_iniciou',
@@ -775,7 +798,7 @@
       if (scoreType && !isTiebreaker) {
         var points = 0;
         if (value === 'nao_sei') {
-          points = 1; // "Não sei" conta como parcial
+          points = 1;
         } else if (questionType === 'positive') { 
           points = value === 'sim' ? 0 : value === 'as_vezes' ? 1 : 2; 
         } else if (questionType === 'negative') { 
@@ -862,7 +885,6 @@
         secondaryEl.style.display = 'none';
       }
 
-      // Track quiz result view
       trackEvent('quiz_result', { 
         quiz_name: 'diagnostico-gameon',
         result_primary: primary,
@@ -898,90 +920,49 @@
         secondResult = sortedScores[1] ? sortedScores[1][0] : '';
       }
 
-      // Labels para resultados (legíveis)
-      var resultadoLabels = {
-        'entrada': 'Entrada',
-        'continuidade': 'Continuidade',
-        'acao': 'Acao',
-        'prova': 'Prova Social',
-        'fechamento': 'Fechamento',
-        'construcao': 'Em Construcao'
-      };
+      // ========== GA4 + Meta Pixel ==========
+      
+      // GA4 - Lead
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'generate_lead', {
+          event_category: 'quiz',
+          event_label: 'quiz_diagnostico_gameon',
+          quiz_result: resultTag
+        });
+      }
+      
+      // Meta Pixel - Lead
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'Lead', { 
+          content_name: 'quiz_diagnostico_gameon',
+          quiz_result: resultTag 
+        });
+        
+        fbq('track', 'CompleteRegistration', {
+          content_name: 'quiz_diagnostico_gameon',
+          status: 'completed'
+        });
+      }
 
-      // Mapear P1: tem_curso
-      var temCursoMap = {
-        'sim_vendo': 'Sim, já vendo',
-        'sim_estruturando': 'Sim, estruturando',
-        'nao_tenho': 'Ainda não tenho'
-      };
+      // ========== Apps Script (Planilha + Brevo Contato) ==========
       
-      // Mapear P2: incomodo
-      var incomodoMap = {
-        'falta_vendas': 'Falta de vendas',
-        'falta_engajamento': 'Falta de engajamento',
-        'sem_resultado': 'Alunos não chegam ao resultado',
-        'nao_sei': 'Não sei exatamente'
-      };
-      
-      // Mapear P3: problema_em
-      var problemaMap = {
-        'marketing': 'Marketing',
-        'conteudo': 'Conteúdo',
-        'estrutura': 'Estrutura da experiência',
-        'nao_sei': 'Não sei dizer'
-      };
-      
-      // Mapear P19: sentimento
-      var sentimentoMap = {
-        'algo_errado': 'Meu curso é bom, mas algo está errado',
-        'entrego_mais': 'Entrego mais do que o aluno aproveita',
-        'medo_escalar': 'Medo de escalar e aumentar frustração',
-        'nao_sei': 'Não sei onde está o problema'
-      };
-      
-      // Mapear P20: preocupacao
-      var preocupacaoMap = {
-        'rasgando_dinheiro': 'Continuar investindo sem retorno',
-        'perder_confianca': 'Perder confiança no meu trabalho',
-        'alunos_frustrados': 'Alunos frustrados',
-        'desistir_escalar': 'Desistir de escalar'
-      };
-
-      // Track Lead (quiz completion)
-      trackEvent('Lead', { 
-        content_name: 'quiz_diagnostico_gameon',
-        quiz_result: resultTag 
-      });
-      
-      // Track CompleteRegistration
-      trackEvent('CompleteRegistration', {
-        content_name: 'quiz_diagnostico_gameon',
-        status: 'completed'
-      });
-
-      // Envia dados completos do quiz para Apps Script (tipo: quiz)
-      // Isso salva na aba Quiz E adiciona tags no Brevo
       sendToAppsScript('quiz', {
         email: email,
         nome: name,
         origem: 'quiz_diagnostico',
-        // Resultados
         quiz_resultado: resultTag,
         resultado_principal: resultadoLabels[resultTag] || resultTag,
         resultado_secundario: resultadoLabels[secondResult] || secondResult,
-        // Qualificação (respostas legíveis)
         tem_curso: temCursoMap[answers[1]] || answers[1] || '',
         incomodo: incomodoMap[answers[2]] || answers[2] || '',
         problema_em: problemaMap[answers[3]] || answers[3] || '',
         sentimento: sentimentoMap[answers[19]] || answers[19] || '',
         preocupacao: preocupacaoMap[answers[20]] || answers[20] || '',
-        // Scores
         score_entrada: scores.entrada + tieScores.entrada,
         score_continuidade: scores.continuidade + tieScores.continuidade,
         score_acao: scores.acao + tieScores.acao,
         score_prova: scores.prova + tieScores.prova,
         score_fechamento: scores.fechamento + tieScores.fechamento,
-        // Extras (dados brutos para análise)
         page_url: window.location.href,
         extras: {
           respostas_raw: answers,
@@ -990,9 +971,59 @@
         }
       });
 
-      console.log('Quiz enviado para Brevo via Apps Script:', {
+      // ========== Brevo Event (Disparo Imediato para Automação) ==========
+      
+      // Evento personalizado Brevo - quiz_concluiu
+      // Este evento dispara a automação de email com o resultado
+      Brevo.push([
+        "track",
+        "quiz_concluiu",
+        {
+          email: email,
+          FIRSTNAME: name
+        },
+        {
+          id: "quiz_diagnostico_" + resultTag,  // ID único por resultado
+          data: {
+            // Resultado principal (para lógica de email)
+            resultado: resultTag,
+            resultado_principal: resultadoLabels[resultTag] || resultTag,
+            resultado_secundario: resultadoLabels[secondResult] || secondResult,
+            
+            // Título e subtítulo do resultado (para personalizar email)
+            resultado_titulo: results[resultTag].title,
+            resultado_subtitulo: results[resultTag].subtitle,
+            
+            // Items do resultado (para listar no email)
+            resultado_item1: results[resultTag].items[0] || '',
+            resultado_item2: results[resultTag].items[1] || '',
+            resultado_item3: results[resultTag].items[2] || '',
+            resultado_item4: results[resultTag].items[3] || '',
+            
+            // Segundo ponto de atenção
+            segundo_ponto_titulo: secondResult && secondPointTexts[secondResult] ? secondPointTexts[secondResult].title : '',
+            segundo_ponto_texto: secondResult && secondPointTexts[secondResult] ? secondPointTexts[secondResult].text : '',
+            
+            // É newsletter? (para CTA diferente)
+            is_newsletter: results[resultTag].isNewsletter ? 'sim' : 'nao',
+            
+            // Qualificação
+            tem_curso: temCursoMap[answers[1]] || '',
+            incomodo: incomodoMap[answers[2]] || '',
+            
+            // Scores
+            score_entrada: scores.entrada + tieScores.entrada,
+            score_continuidade: scores.continuidade + tieScores.continuidade,
+            score_acao: scores.acao + tieScores.acao,
+            score_prova: scores.prova + tieScores.prova,
+            score_fechamento: scores.fechamento + tieScores.fechamento
+          }
+        }
+      ]);
+
+      console.log('Quiz enviado - Brevo Event:', {
+        evento: 'quiz_concluiu',
         email: email,
-        nome: name,
         resultado: resultTag,
         secundario: secondResult
       });
@@ -1003,12 +1034,10 @@
     // ============ INITIALIZATION ============
     
     document.addEventListener('DOMContentLoaded', function() {
-      // Pré-preenche email se veio da URL
       if (emailFromURL) {
         document.getElementById('userEmail').value = emailFromURL;
       }
       
-      // Event listeners para opções
       var options = document.querySelectorAll('.quiz-option');
       for (var i = 0; i < options.length; i++) {
         options[i].addEventListener('click', function() {
@@ -1021,12 +1050,10 @@
         });
       }
       
-      // Enter no campo de email
       document.getElementById('userEmail').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') submitEmail();
       });
       
-      // Track page view
       trackEvent('PageView', { page: 'diagnostico-gameon' });
     });
   </script>
