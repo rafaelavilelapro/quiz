@@ -950,7 +950,6 @@
         email: email,
         nome: name,
         origem: 'quiz_diagnostico',
-        quiz_resultado: resultTag,
         resultado_principal: resultadoLabels[resultTag] || resultTag,
         resultado_secundario: resultadoLabels[secondResult] || secondResult,
         tem_curso: temCursoMap[answers[1]] || answers[1] || '',
@@ -963,7 +962,6 @@
         score_acao: scores.acao + tieScores.acao,
         score_prova: scores.prova + tieScores.prova,
         score_fechamento: scores.fechamento + tieScores.fechamento,
-        page_url: window.location.href,
         extras: {
           respostas_raw: answers,
           scores_raw: scores,
@@ -974,7 +972,6 @@
       // ========== Brevo Event (Disparo Imediato para Automação) ==========
       
       // Evento personalizado Brevo - quiz_concluiu
-      // Este evento dispara a automação de email com o resultado
       Brevo.push([
         "track",
         "quiz_concluiu",
@@ -983,35 +980,11 @@
           FIRSTNAME: name
         },
         {
-          id: "quiz_diagnostico_" + resultTag,  // ID único por resultado
+          id: "quiz_diagnostico",
           data: {
-            // Resultado principal (para lógica de email)
             resultado: resultTag,
-            resultado_principal: resultadoLabels[resultTag] || resultTag,
-            resultado_secundario: resultadoLabels[secondResult] || secondResult,
-            
-            // Título e subtítulo do resultado (para personalizar email)
-            resultado_titulo: results[resultTag].title,
-            resultado_subtitulo: results[resultTag].subtitle,
-            
-            // Items do resultado (para listar no email)
-            resultado_item1: results[resultTag].items[0] || '',
-            resultado_item2: results[resultTag].items[1] || '',
-            resultado_item3: results[resultTag].items[2] || '',
-            resultado_item4: results[resultTag].items[3] || '',
-            
-            // Segundo ponto de atenção
-            segundo_ponto_titulo: secondResult && secondPointTexts[secondResult] ? secondPointTexts[secondResult].title : '',
-            segundo_ponto_texto: secondResult && secondPointTexts[secondResult] ? secondPointTexts[secondResult].text : '',
-            
-            // É newsletter? (para CTA diferente)
-            is_newsletter: results[resultTag].isNewsletter ? 'sim' : 'nao',
-            
-            // Qualificação
+            resultado_secundario: secondResult || '',
             tem_curso: temCursoMap[answers[1]] || '',
-            incomodo: incomodoMap[answers[2]] || '',
-            
-            // Scores
             score_entrada: scores.entrada + tieScores.entrada,
             score_continuidade: scores.continuidade + tieScores.continuidade,
             score_acao: scores.acao + tieScores.acao,
